@@ -2,12 +2,16 @@
 
 Windows Bluetooth LE nodes for Samsung Gear VR / ET-YO324 controllers in vvvv gamma 7.4 or later. One package manages up to eight paired controllers.
 
-Source code: [github.com/murxylink/VL.Devices.GearVR](https://github.com/murxylink/VL.Devices.GearVR)
-
 ## Install
 
 1. Pair every controller in **Windows Settings > Bluetooth & devices** first. Do not connect it as a mouse or gamepad application.
-2. In Gamma, use **Manage NuGets > Install from local package** and choose `VL.Devices.GearVR.1.2.1.nupkg`.
+2. In a command prompt opened in Gamma's package folder (for example, `C:\NugetOverride\7.4`), install the public package from NuGet.org:
+
+   ```powershell
+   nuget install VL.Devices.GearVR -Version 1.2.2 -Source https://api.nuget.org/v3/index.json
+   ```
+
+   Restart Gamma after the installation.
 3. Add **GearVR Controller**. Its initial search completes before the **Bluetooth Controller** input is created, so the first paired controller is selected automatically rather than `NULL`. The dropdown displays full Windows Bluetooth names, such as `Gear VR Controller(5951)`. **Active Controller** shows the actual choice. Set **Rescan** to `true` for one frame to refresh the dropdown, or select another controller manually.
 4. Connect its **Controller** output to **Clicks**, **Movement**, and/or **Touchpad**.
 
