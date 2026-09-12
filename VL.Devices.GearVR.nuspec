@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>VL.Devices.GearVR</id>
+    <version>1.2.1</version>
+    <title>VL.Devices.GearVR</title>
+    <authors>murxylink</authors>
+    <owners>murxylink</owners>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/murxylink/VL.Devices.GearVR</projectUrl>
+    <repository type="git" url="https://github.com/murxylink/VL.Devices.GearVR" />
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Windows Bluetooth LE input nodes for up to eight Samsung Gear VR / ET-YO324 controllers in vvvv gamma.</description>
+    <tags>VL vvvv gamma GearVR ET-YO324 Bluetooth controller input</tags>
+    <readme>README.md</readme>
+    <dependencies>
+      <group targetFramework="net8.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="VL.Devices.GearVR.vl" />
+    <file src="README.md" />
+    <file src="LICENSE" />
+    <file src="help\**\*" target="help" />
+    <file src="lib\net8.0\**\*" target="lib\net8.0" />
+  </files>
+</package>

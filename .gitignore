@@ -1,0 +1,20 @@
+# Build output and locally generated NuGet packages
+/artifacts/
+/build/
+/lib/
+/src/bin/
+/src/obj/
+
+# Temporary validation patches and diagnostic output
+/verification/ImportInspection.vl
+/verification/*.log
+/verification/compiled-check/
+/verification/compiled-direct-package-check/
+/src/*.log
+
+# IDE and operating-system metadata
+/.vs/
+*.user
+*.suo
+Thumbs.db
+.DS_Store

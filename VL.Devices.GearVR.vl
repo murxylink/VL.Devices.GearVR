@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns:p="property" xmlns:r="reflection" Id="QeCwVLL7M9JxH48dGH8k0O" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="D3vicesGearVrCoreLib" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="G5YBfWzEdrxat8p4yWw7Xf">
+    <Canvas Id="aXEKRVmtVSOYFsXblWT2M5" DefaultCategory="Devices.GearVR" CanvasType="FullCategory" />
+    <Node Name="Application" Bounds="100,100" Id="YHWdv4eu9XwTdlSKP1w0GU">
+      <p:NodeReference LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+        <Choice Kind="ContainerDefinition" Name="Process" />
+        <CategoryReference Kind="Category" Name="Primitive" />
+      </p:NodeReference>
+      <Patch Id="cdHuSOysuh62NKOCqSmXrI">
+        <Canvas Id="p0kDwxf0udEeSEVK8kQXkV" CanvasType="Group" />
+        <Patch Id="b7C2HQvVBFrhKXoZfU5pL5" Name="Create" />
+        <Patch Id="b2LctCFMRKrpyIDCvAnlMd" Name="Update" />
+        <ProcessDefinition Id="bWyPkKgyzv1StmR7Tnk3hA">
+          <Fragment Id="GRrMroBKAIFgtwvoIYQQ91" Patch="b7C2HQvVBFrhKXoZfU5pL5" Enabled="true" />
+          <Fragment Id="HAUhzdIIQlVmUSLcNu4laC" Patch="b2LctCFMRKrpyIDCvAnlMd" Enabled="true" />
+        </ProcessDefinition>
+      </Patch>
+    </Node>
+  </Patch>
+  <PlatformDependency Id="NAYvrControllerAssembly" Location="./lib/net8.0/VL.Devices.GearVR.dll" IsForward="true" />
+</Document>

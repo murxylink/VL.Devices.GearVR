@@ -1,0 +1,15 @@
+using VL.Core.Import;
+
+[assembly: ImportType(typeof(VL.Devices.GearVR.GearVRController), Category = "Devices.GearVR")]
+[assembly: ImportType(typeof(VL.Devices.GearVR.Clicks), Category = "Devices.GearVR")]
+[assembly: ImportType(typeof(VL.Devices.GearVR.Movement), Category = "Devices.GearVR")]
+[assembly: ImportType(typeof(VL.Devices.GearVR.Touchpad), Category = "Devices.GearVR")]
+[assembly: ImportType(typeof(VL.Devices.GearVR.SensorRecorder), Category = "Devices.GearVR")]
+[assembly: ImportType(typeof(VL.Devices.GearVR.SensorPlayer), Category = "Devices.GearVR")]
+[assembly: ImportType(typeof(VL.Devices.GearVR.GearVRControllerSerialNumber), Category = "Devices.GearVR")]
+[assembly: ImportType(typeof(VL.Devices.GearVR.GearVRControllerSerialNumberDefinition), Category = "Devices.GearVR")]
+[assembly: ImportType(typeof(VL.Devices.GearVR.GearVRConnectionState), Category = "Devices.GearVR")]
+[assembly: ImportType(typeof(VL.Devices.GearVR.GearVRControllerSlot), Category = "Devices.GearVR")]
+[assembly: ImportType(typeof(VL.Devices.GearVR.GearVRSwipeDirection), Category = "Devices.GearVR")]
+[assembly: ImportType(typeof(VL.Devices.GearVR.GearVRTouchGesture), Category = "Devices.GearVR")]
+[assembly: ImportType(typeof(VL.Devices.GearVR.GearVRControllerInfo), Category = "Devices.GearVR")]

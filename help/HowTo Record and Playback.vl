@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns:p="property" xmlns:r="reflection" Id="V3m7RSogjXlQE3IJKYGvbr" LanguageVersion="2025.7.4" Version="0.128">
+  <NugetDependency Id="QkDxkgtSCzfK97HD0fxqSG" Location="VL.CoreLib" Version="2025.7.4" />
+  <Patch Id="SMfByzkIR3WQIV8wQ3xwLo">
+    <Canvas Id="P8kAGq6rYSBPu16gEMJjIc" DefaultCategory="Main" BordersChecked="false" CanvasType="FullCategory" />
+    <!--
+
+    ************************ Application ************************
+
+-->
+    <Node Name="Application" Bounds="100,100" Id="Nu26ibmYUqJPhbxw4ph7HR">
+      <p:NodeReference>
+        <Choice Kind="ContainerDefinition" Name="Process" />
+        <CategoryReference Kind="Category" Name="Primitive" />
+      </p:NodeReference>
+      <Patch Id="M3VNs6ynqB4LzRxlnD445h">
+        <Canvas Id="INHJy2S7o2TQa92x0UoKiO" CanvasType="Group">
+          <Node Bounds="60,134,98,19" Id="SyHkJ7vAkxIMmqqM1VgQJg">
+            <p:NodeReference LastCategoryFullName="Devices.GearVR" LastDependency="VL.Devices.GearVR.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <CategoryReference Kind="Category" Name="Devices" />
+              <CategoryReference Kind="Category" Name="GearVR" />
+              <Choice Kind="ProcessAppFlag" Name="GearVR Controller" />
+            </p:NodeReference>
+            <Pin Id="ROC1Aoo3JYGOs5ypj7YuT0" Name="Bluetooth Controller" Kind="InputPin" />
+            <Pin Id="PPJ6dziJOSCPOUqnp5mkbx" Name="Rescan" Kind="InputPin" />
+            <Pin Id="CaiI54EiT76Ow9BUrEmplB" Name="Controller" Kind="OutputPin" />
+            <Pin Id="LMujopISH1JLBlHTJbLYRA" Name="Info" Kind="OutputPin" />
+            <Pin Id="J85j3zlawEyNeX5o4oPRxv" Name="Battery" Kind="OutputPin" />
+            <Pin Id="FPAqISM8DO6Qb5Caytu33s" Name="Active Controller" Kind="OutputPin" />
+          </Node>
+          <Pad Id="JduFMrjd4hEPXxlQTyBYiq" Comment="Bluetooth Controller" Bounds="62,114,144,15" ShowValueBox="true" isIOBox="true" Value="Gear VR Controller(5951)">
+            <p:TypeAnnotation LastCategoryFullName="Devices.GearVR" LastDependency="VL.Devices.GearVR.vl">
+              <Choice Kind="TypeFlag" Name="GearVRControllerSerialNumber" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="FFL5yiIYn2ZPGxHVZlUPUA" Comment="Rescan" Bounds="155,65,35,35" ShowValueBox="true" isIOBox="true" Value="false">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:buttonmode p:Assembly="VL.UI.Forms" p:Type="VL.HDE.PatchEditor.Editors.ButtonModeEnum">Bang</p:buttonmode>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Node Bounds="60,264,90,19" Id="KUj9EokYiLXO9ZFNsO8JKA">
+            <p:NodeReference LastCategoryFullName="Devices.GearVR" LastDependency="VL.Devices.GearVR.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <CategoryReference Kind="Category" Name="Devices" />
+              <CategoryReference Kind="Category" Name="GearVR" />
+              <Choice Kind="ProcessAppFlag" Name="Sensor Recorder" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="KSd6lEt0egjLbNW5WFDBpM" Name="Controller" Kind="InputPin" />
+            <Pin Id="P5DOSVn5MvzQL8XBcf64Ni" Name="Record" Kind="InputPin" />
+            <Pin Id="JGnYIXCykY5QAaLbYw8SnI" Name="Requested File Path" Kind="InputPin" />
+            <Pin Id="OYNYFrh4jWxO2hf15NtEfm" Name="Recording" Kind="OutputPin" />
+            <Pin Id="UE3rhZPgm6YORUBV7OwVz9" Name="Samples" Kind="OutputPin" />
+            <Pin Id="FfJOMZa7DruQUynJlRS99c" Name="File Path" Kind="OutputPin" />
+            <Pin Id="MiiEPYZYMfHLZMcOrVKFYw" Name="Error" Kind="OutputPin" />
+          </Node>
+          <Pad Id="L7lDVLRFP87PAidFJUaUUU" Comment="Record" Bounds="104,204,35,35" ShowValueBox="true" isIOBox="true" Value="False">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:buttonmode p:Assembly="VL.UI.Forms" p:Type="VL.HDE.PatchEditor.Editors.ButtonModeEnum">Toggle</p:buttonmode>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="QRBNXaYgl6qLRUABhGr9rS" Comment="Requested File Path" Bounds="147,244,53,15" ShowValueBox="true" isIOBox="true" Value="">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="Rp5HjVhSbwdNktOBOdxmqW" Bounds="312,246,297,43" ShowValueBox="true" isIOBox="true" Value="&lt;--- Destination CSV file. Leave empty to save automatically in Documents\GearVRRecordings.">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:fontsize p:Type="Int32">9</p:fontsize>
+              <p:stringtype p:Assembly="VL.Core" p:Type="VL.Core.StringType">Comment</p:stringtype>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="IOCpbGAxtK0QdVVfcvOrlc" Comment="Recording" Bounds="62,304,35,35" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="C59IxPLhb1ANWwR9tNT9Kl" Comment="Samples" Bounds="90,345,35,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="HpOMobALqBWNNY52IvBR8S" Comment="File Path" Bounds="119,374,472,18" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="ALJrFF2zJ6tOx1a3bW8CpB" Comment="Error" Bounds="147,415,205,134" ShowValueBox="true" isIOBox="true" />
+          <Overlay Id="VKr6meIYtEgOl6iD4F8Sj3" Name="Player" Bounds="8,7,694,584">
+            <p:ColorIndex p:Type="Int32">5</p:ColorIndex>
+          </Overlay>
+          <Node Bounds="953,277,165,19" Id="GsAXsnY8xiJLGJnuEGFFqh">
+            <p:NodeReference LastCategoryFullName="Devices.GearVR" LastDependency="VL.Devices.GearVR.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <CategoryReference Kind="Category" Name="Devices" />
+              <CategoryReference Kind="Category" Name="GearVR" />
+              <Choice Kind="ProcessAppFlag" Name="Sensor Player" />
+            </p:NodeReference>
+            <p:HelpFocus p:Assembly="VL.Lang" p:Type="VL.Model.HelpPriority">High</p:HelpFocus>
+            <Pin Id="Blhep33NB9WP54wOOwsQUy" Name="File Path" Kind="InputPin" />
+            <Pin Id="PiAGWh661JSQdTTaewZrz3" Name="Play" Kind="InputPin" />
+            <Pin Id="DglJGUQQi0mNZ2anIv07Qo" Name="Speed" Kind="InputPin" />
+            <Pin Id="FwcP1ayU9yzOpDAWb3GM4O" Name="Loop" Kind="InputPin" />
+            <Pin Id="Qo3zOEjghQvMCbv19YsdwM" Name="Restart" Kind="InputPin" />
+            <Pin Id="G8Dr0nekoypOAu9qmH0dAQ" Name="Controller" Kind="OutputPin" />
+            <Pin Id="FS6G4kr2Yq8NGDpelrA2lH" Name="Info" Kind="OutputPin" />
+            <Pin Id="FRDbkbKAtssORCnBL78suj" Name="Is Playing" Kind="OutputPin" />
+            <Pin Id="NBYTSOsF1bQPHcBQvCyRYs" Name="Position Seconds" Kind="OutputPin" />
+            <Pin Id="N7zKtXV3qfhMyZ61ctzzIW" Name="Duration Seconds" Kind="OutputPin" />
+            <Pin Id="Rt3DWqPqly8LkBrEpFg6f7" Name="Progress" Kind="OutputPin" />
+            <Pin Id="Fbm3m4IzgouNDwbvcoeHwM" Name="Frame" Kind="OutputPin" />
+            <Pin Id="GB8iBQPm7zGO9SI9QkcKMi" Name="Frame Count" Kind="OutputPin" />
+            <Pin Id="E4VRjcISjx1QAotBixM4Yb" Name="Error" Kind="OutputPin" />
+          </Node>
+          <Pad Id="KJFCDnEprwoNnJUc0tIvp0" Comment="File Path" Bounds="955,246,423,17" ShowValueBox="true" isIOBox="true">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="UlOTw285vYILTXRGTc0vC3" Comment="Play" Bounds="995,198,35,35" ShowValueBox="true" isIOBox="true" Value="True">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:buttonmode p:Assembly="VL.UI.Forms" p:Type="VL.HDE.PatchEditor.Editors.ButtonModeEnum">Toggle</p:buttonmode>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="Ctim0pCjUEaPQWdJrLcVYO" Comment="Speed" Bounds="1035,167,35,15" ShowValueBox="true" isIOBox="true" Value="1">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="Float32" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Pad Id="Oqy5jhZw9ZYOh4TqSpMnq5" Comment="Loop" Bounds="1075,118,35,35" ShowValueBox="true" isIOBox="true" Value="True">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:buttonmode p:Assembly="VL.UI.Forms" p:Type="VL.HDE.PatchEditor.Editors.ButtonModeEnum">Toggle</p:buttonmode>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="HnHp6cf7w9wLCCwRAW0o2j" Comment="Restart" Bounds="1115,67,35,35" ShowValueBox="true" isIOBox="true" Value="False">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="ImmutableTypeFlag" Name="Boolean" />
+            </p:TypeAnnotation>
+            <p:ValueBoxSettings>
+              <p:buttonmode p:Assembly="VL.UI.Forms" p:Type="VL.HDE.PatchEditor.Editors.ButtonModeEnum">Bang</p:buttonmode>
+            </p:ValueBoxSettings>
+          </Pad>
+          <Pad Id="CeKawek96oTPbjhG251wT6" Comment="Is Playing" Bounds="995,327,35,35" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="F3JhrhyEueoOGFaP07gToq" Comment="Position Seconds" Bounds="1015,377,47,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="CowSqKC5TN2N23m3NmnmuI" Comment="Duration Seconds" Bounds="1035,407,44,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="K7Pq6OSFCveNLd7gV2Aruz" Comment="Progress" Bounds="1055,437,41,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="IZn577vn6gBLb5owFuJcqz" Comment="Frame" Bounds="1071,468,35,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="PJELIPUj38VNEGMgXSl850" Comment="Frame Count" Bounds="1095,497,35,15" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="Qw6wCKbjZQnPPrddMXq8rU" Comment="Error" Bounds="1115,528,205,134" ShowValueBox="true" isIOBox="true">
+            <p:TypeAnnotation LastCategoryFullName="Primitive" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="TypeFlag" Name="String" />
+            </p:TypeAnnotation>
+          </Pad>
+          <Node Bounds="953,157,60,19" Id="S8X4ywJNR3FLonKUykzpXV">
+            <p:NodeReference LastCategoryFullName="System.Application" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="ProcessAppFlag" Name="PatchPath" />
+            </p:NodeReference>
+            <Pin Id="GSO57NFGm5nOLmrehgVAJt" Name="Output" Kind="OutputPin" />
+            <Pin Id="HzhS1KvYFYtOB66DKORoqn" Name="Node Context" Kind="InputPin" IsHidden="true" />
+          </Node>
+          <Node Bounds="953,198,25,19" Id="PRygXJ2XjB5NDlIlWugK7y">
+            <p:NodeReference LastCategoryFullName="Math" LastDependency="VL.CoreLib.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <Choice Kind="OperationCallFlag" Name="+" />
+            </p:NodeReference>
+            <Pin Id="TVCX0xz4cMZMttv2igqY9R" Name="Input" Kind="InputPin" />
+            <Pin Id="B3mOu3R7wCxM2Vu8EwDwsE" Name="Input 2" Kind="InputPin" DefaultValue="demo.csv" />
+            <Pin Id="HXrADjBQBiQPhhHgVlRHLl" Name="Output" Kind="OutputPin" />
+          </Node>
+          <Node Bounds="953,497,105,19" Id="VaseRAWxjO6N1l7NBI9lKL">
+            <p:NodeReference LastCategoryFullName="Devices.GearVR" LastDependency="VL.Devices.GearVR.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <CategoryReference Kind="Category" Name="Devices" />
+              <CategoryReference Kind="Category" Name="GearVR" />
+              <Choice Kind="ProcessAppFlag" Name="Clicks" />
+            </p:NodeReference>
+            <Pin Id="FwDfO6YxRRuMqy1PSO5Iwa" Name="Controller" Kind="InputPin" />
+            <Pin Id="NJBocRS4I1YNIYtkQHHD00" Name="Trigger" Kind="OutputPin" />
+            <Pin Id="QumrcazegumP8KCVlBcfBh" Name="Home" Kind="OutputPin" />
+            <Pin Id="A6krYmWjXs0ODwjGNMeIL5" Name="Back" Kind="OutputPin" />
+            <Pin Id="KNhg4VQtERaLGD6SsLZkj8" Name="Touchpad" Kind="OutputPin" />
+            <Pin Id="AsyLVH7aax6Pz51v0Tci1c" Name="Volume Up" Kind="OutputPin" />
+            <Pin Id="UyUt2AIngKVLhqzSp3Y42W" Name="Volume Down" Kind="OutputPin" />
+          </Node>
+          <Pad Id="B0KnfkMwGVXPsZeSQKCtrn" Comment="Trigger" Bounds="955,537,35,35" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="SB35SxjWNG5O50Tr0U77x8" Comment="Home" Bounds="975,578,35,35" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="PDOUPGv6UxAORrpJCdgVQw" Comment="Back" Bounds="995,618,35,35" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="PFG0nrZiFR5QRFQRlsIiuR" Comment="Touchpad" Bounds="1015,658,35,35" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="HV62Ggc4rZQLj7VO0vQRCK" Comment="Volume Up" Bounds="1035,697,35,35" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="EsKIFZ0jpu5M3fGqpcETO2" Comment="Volume Down" Bounds="1055,737,35,35" ShowValueBox="true" isIOBox="true" />
+          <Node Bounds="804,497,85,19" Id="CUKqJKglPhyP3I40o1Xww9">
+            <p:NodeReference LastCategoryFullName="Devices.GearVR" LastDependency="VL.Devices.GearVR.vl">
+              <Choice Kind="NodeFlag" Name="Node" Fixed="true" />
+              <CategoryReference Kind="Category" Name="Devices" />
+              <CategoryReference Kind="Category" Name="GearVR" />
+              <Choice Kind="ProcessAppFlag" Name="Movement" />
+            </p:NodeReference>
+            <Pin Id="TXyayVpoA2BQTKMxGgho5J" Name="Controller" Kind="InputPin" />
+            <Pin Id="SMsiDgqbELNOLavLFRc4mL" Name="Reset Orientation" Kind="InputPin" />
+            <Pin Id="JqzZXczHEWmLsw8jlBxTp7" Name="Calibrate" Kind="InputPin" />
+            <Pin Id="V3le8iZP8SfLCDQ8lhbXoy" Name="Gravity Response Seconds" Kind="InputPin" />
+            <Pin Id="HqfuJWkBixjNGKOsiWofaM" Name="Orientation Correction" Kind="InputPin" />
+            <Pin Id="HsbR09UmuXMLAWroNyGFbd" Name="Raw Acceleration" Kind="OutputPin" IsHidden="true" />
+            <Pin Id="EmYxZBaXkuLLvNMtnxKKAE" Name="Acceleration" Kind="OutputPin" IsHidden="true" />
+            <Pin Id="H82wMP7MxZGLcge1oF5csk" Name="Raw Gyroscope" Kind="OutputPin" IsHidden="true" />
+            <Pin Id="BjHId7D2WnbNKdNbcUEQN0" Name="Angular Velocity" Kind="OutputPin" IsHidden="true" />
+            <Pin Id="REjcsz3zyYzPMsfgzIfSPX" Name="Raw Magnetometer" Kind="OutputPin" IsHidden="true" />
+            <Pin Id="SkxVMT8jL26OYs3o4AeV8p" Name="Magnetic Field" Kind="OutputPin" IsHidden="true" />
+            <Pin Id="BVJ4h69dF3BO8Bbl3BpsSQ" Name="Gravity" Kind="OutputPin" IsHidden="true" />
+            <Pin Id="QAjzx9zqBZ7NBdKzZDUzcr" Name="Linear Acceleration" Kind="OutputPin" />
+            <Pin Id="K9aJFxwtLxKMl6NSuEsGqr" Name="Calibrated Angular Velocity" Kind="OutputPin" IsHidden="true" />
+            <Pin Id="TrlMxtYvH3tMbtfBATIC9F" Name="Acceleration Magnitude" Kind="OutputPin" IsHidden="true" />
+            <Pin Id="V4wQWeOyW5ML9ns1TzWkJR" Name="Orientation" Kind="OutputPin" />
+            <Pin Id="JiJJtOzumxNLwWTrdWul5j" Name="Rotation Degrees" Kind="OutputPin" />
+            <Pin Id="PL1oTcwSSBLPe324qpi4bF" Name="Is Calibrated" Kind="OutputPin" />
+            <Pin Id="DJ3lNzYNZWaQLeEl3Y7czn" Name="Is Calibrating" Kind="OutputPin" />
+            <Pin Id="UqCKgA4fdNhPfXSHhwXDVh" Name="Calibration Progress" Kind="OutputPin" IsHidden="true" />
+          </Node>
+          <Pad Id="UB6kcfZtZO6PvoRreStENk" Comment="Quaternion" Bounds="826,618,35,57" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="A0OEvNI56SzNhjdcb3mWTB" Comment="Linear Acceleration" Bounds="806,558,35,43" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="PsLbIfLB4dYN4OInQ7sCdf" Comment="Rotation Degrees" Bounds="846,692,35,43" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="CECBrN2qZqBNVghIR1WaUp" Comment="Is Calibrated" Bounds="866,753,35,35" ShowValueBox="true" isIOBox="true" />
+          <Pad Id="H8GnqU8tRdmNdouceViLhA" Comment="Is Calibrating" Bounds="886,803,35,35" ShowValueBox="true" isIOBox="true" />
+          <Overlay Id="UF3gwl9mfwyN5fTCwKvedO" Name="Playback" Bounds="732,9,737,872">
+            <p:ColorIndex p:Type="Int32">6</p:ColorIndex>
+          </Overlay>
+        </Canvas>
+        <Patch Id="MDoi6wLcPXkQXKvm5XcLM6" Name="Create" />
+        <Patch Id="Pxhnjwhd31qNtvpOqUpY2y" Name="Update" />
+        <ProcessDefinition Id="DtV1umjtTYlMUIwbiJd7HF">
+          <Fragment Id="TaA7lPIEUboMoM8MGW5yD4" Patch="MDoi6wLcPXkQXKvm5XcLM6" Enabled="true" />
+          <Fragment Id="K8JkZnpJBjlPrVzHR5LP8p" Patch="Pxhnjwhd31qNtvpOqUpY2y" Enabled="true" />
+        </ProcessDefinition>
+        <Link Id="C7OumKkZqL4QCMqgwjkAxD" Ids="JduFMrjd4hEPXxlQTyBYiq,ROC1Aoo3JYGOs5ypj7YuT0" />
+        <Link Id="DxGNJ8InTScPACF0a2GTAv" Ids="FFL5yiIYn2ZPGxHVZlUPUA,PPJ6dziJOSCPOUqnp5mkbx" />
+        <Link Id="KUWbMle2gwcNZNFdTVDVlH" Ids="CaiI54EiT76Ow9BUrEmplB,KSd6lEt0egjLbNW5WFDBpM" />
+        <Link Id="JlsRmLjPWbPOnPy4TLCVlc" Ids="L7lDVLRFP87PAidFJUaUUU,P5DOSVn5MvzQL8XBcf64Ni" />
+        <Link Id="BCbMvt0SWItOgrkRyfVwxV" Ids="QRBNXaYgl6qLRUABhGr9rS,JGnYIXCykY5QAaLbYw8SnI" />
+        <Link Id="Hbhp4Kvpa93P81p7Eq0idX" Ids="OYNYFrh4jWxO2hf15NtEfm,IOCpbGAxtK0QdVVfcvOrlc" />
+        <Link Id="FsJ0HszxMl2P79kYsd6365" Ids="UE3rhZPgm6YORUBV7OwVz9,C59IxPLhb1ANWwR9tNT9Kl" />
+        <Link Id="BLBZBtoK6tuPIoTIXoaizJ" Ids="FfJOMZa7DruQUynJlRS99c,HpOMobALqBWNNY52IvBR8S" />
+        <Link Id="IK4Q1ZmZZlyNF0aLMJgeRo" Ids="MiiEPYZYMfHLZMcOrVKFYw,ALJrFF2zJ6tOx1a3bW8CpB" />
+        <Link Id="F9ykZcrqbsZMT6C6aCw3pr" Ids="KJFCDnEprwoNnJUc0tIvp0,Blhep33NB9WP54wOOwsQUy" />
+        <Link Id="QXQqVzabIOXQFB4lIpfeuu" Ids="UlOTw285vYILTXRGTc0vC3,PiAGWh661JSQdTTaewZrz3" />
+        <Link Id="FHhUqYVzvBTL6oLHsYPzJn" Ids="Ctim0pCjUEaPQWdJrLcVYO,DglJGUQQi0mNZ2anIv07Qo" />
+        <Link Id="PnQjkmQ0RkqP9XSkHTto4X" Ids="Oqy5jhZw9ZYOh4TqSpMnq5,FwcP1ayU9yzOpDAWb3GM4O" />
+        <Link Id="TVCT6uZRki7Mst8ShUWN8G" Ids="HnHp6cf7w9wLCCwRAW0o2j,Qo3zOEjghQvMCbv19YsdwM" />
+        <Link Id="SeSjrtVkArPNhwnBgYsbeS" Ids="FRDbkbKAtssORCnBL78suj,CeKawek96oTPbjhG251wT6" />
+        <Link Id="LuzGSO4w1wYQUAydxRV8yQ" Ids="NBYTSOsF1bQPHcBQvCyRYs,F3JhrhyEueoOGFaP07gToq" />
+        <Link Id="N9bQLrb2Cs4O1rzxwTfKGx" Ids="N7zKtXV3qfhMyZ61ctzzIW,CowSqKC5TN2N23m3NmnmuI" />
+        <Link Id="HTrRwrofzssMnEPsyBnYY4" Ids="Rt3DWqPqly8LkBrEpFg6f7,K7Pq6OSFCveNLd7gV2Aruz" />
+        <Link Id="Tda7hFUZWqnQaDztuqVSJ1" Ids="Fbm3m4IzgouNDwbvcoeHwM,IZn577vn6gBLb5owFuJcqz" />
+        <Link Id="Ca2fUtSlp9INf4nlfJfDk3" Ids="GB8iBQPm7zGO9SI9QkcKMi,PJELIPUj38VNEGMgXSl850" />
+        <Link Id="IhqAB7vlRmlLFkJxuR3lof" Ids="E4VRjcISjx1QAotBixM4Yb,Qw6wCKbjZQnPPrddMXq8rU" />
+        <Link Id="P6ijjS1X29TMIA6cK7U5zX" Ids="GSO57NFGm5nOLmrehgVAJt,TVCX0xz4cMZMttv2igqY9R" />
+        <Link Id="F7TOtQUlV8WMhBUqMuQ5AI" Ids="HXrADjBQBiQPhhHgVlRHLl,KJFCDnEprwoNnJUc0tIvp0" />
+        <Link Id="KoZhTv8jtKcPHTojVog5xw" Ids="NJBocRS4I1YNIYtkQHHD00,B0KnfkMwGVXPsZeSQKCtrn" />
+        <Link Id="J4OBaBhp8oGOHQLn4w70yu" Ids="QumrcazegumP8KCVlBcfBh,SB35SxjWNG5O50Tr0U77x8" />
+        <Link Id="RzYRt0Cd4cvNBqVeZyvtFX" Ids="A6krYmWjXs0ODwjGNMeIL5,PDOUPGv6UxAORrpJCdgVQw" />
+        <Link Id="Nqudz2NvJV5MckXsIFQFWc" Ids="KNhg4VQtERaLGD6SsLZkj8,PFG0nrZiFR5QRFQRlsIiuR" />
+        <Link Id="JqgxgsxbJDyLRURUk6xXPn" Ids="AsyLVH7aax6Pz51v0Tci1c,HV62Ggc4rZQLj7VO0vQRCK" />
+        <Link Id="UUlThb7k7m2Mi4y4X0leQT" Ids="UyUt2AIngKVLhqzSp3Y42W,EsKIFZ0jpu5M3fGqpcETO2" />
+        <Link Id="G7awFZgPJOfMSEY1XX1gGQ" Ids="G8Dr0nekoypOAu9qmH0dAQ,FwDfO6YxRRuMqy1PSO5Iwa" />
+        <Link Id="Ouq06hhBXSvLBtoA8qNX7D" Ids="V4wQWeOyW5ML9ns1TzWkJR,UB6kcfZtZO6PvoRreStENk" />
+        <Link Id="KwVOpYgd6ADNTbXqGFLGAF" Ids="QAjzx9zqBZ7NBdKzZDUzcr,A0OEvNI56SzNhjdcb3mWTB" />
+        <Link Id="Uab0BIPd0JCMr44iXAyRQr" Ids="JiJJtOzumxNLwWTrdWul5j,PsLbIfLB4dYN4OInQ7sCdf" />
+        <Link Id="FpxPS9sRQafLuTgD4HTuQo" Ids="PL1oTcwSSBLPe324qpi4bF,CECBrN2qZqBNVghIR1WaUp" />
+        <Link Id="A1VAB9KWrEOMlucWUWeItm" Ids="DJ3lNzYNZWaQLeEl3Y7czn,H8GnqU8tRdmNdouceViLhA" />
+        <Link Id="K7RPl8neoUTOlVXmhsvtfL" Ids="G8Dr0nekoypOAu9qmH0dAQ,TXyayVpoA2BQTKMxGgho5J" />
+      </Patch>
+    </Node>
+  </Patch>
+  <NugetDependency Id="QCNaG2jZZwiPsIoxACQzFT" Location="VL.Devices.GearVR" Version="0.0.0" />
+</Document>

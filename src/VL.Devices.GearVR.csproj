@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows10.0.22000.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>VL.Devices.GearVR</AssemblyName>
+    <RootNamespace>VL.Devices.GearVR</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Version>1.2.1</Version>
+    <AssemblyVersion>1.2.1.0</AssemblyVersion>
+    <FileVersion>1.2.1.0</FileVersion>
+    <NoWarn>$(NoWarn);1591;CA1416</NoWarn>
+    <OutputPath>..\lib\net8.0\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="VL.Core">
+      <HintPath>C:\Program Files\vvvv\vvvv_gamma_7.4-win-x64\VL.Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Stride.Core.Mathematics">
+      <HintPath>C:\Program Files\vvvv\vvvv_gamma_7.4-win-x64\Stride.Core.Mathematics.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+  <Target Name="CopyWindowsRuntimeProjection" AfterTargets="Build">
+    <ItemGroup>
+      <WindowsRuntimeProjection Include="$(NuGetPackageRoot)microsoft.windows.sdk.net.ref\10.0.22000.57\lib\net8.0\Microsoft.Windows.SDK.NET.dll" />
+      <WindowsRuntimeProjection Include="$(NuGetPackageRoot)microsoft.windows.sdk.net.ref\10.0.22000.57\lib\net8.0\WinRT.Runtime.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(WindowsRuntimeProjection)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>
