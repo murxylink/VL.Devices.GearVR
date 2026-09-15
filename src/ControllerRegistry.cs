@@ -84,7 +84,7 @@ internal static class ControllerRegistry
             leases.TryRemove(leaseId, out _);
     }
 
-    private static void ReconcileConnection(string controllerName)
+    private static void ReconcileConnection(string controllerName, bool retryFailedConnection = false)
     {
         var descriptor = Volatile.Read(ref _controllers)
             .FirstOrDefault(item => string.Equals(item.ControllerName, controllerName, StringComparison.Ordinal));
@@ -93,7 +93,7 @@ internal static class ControllerRegistry
 
         if (ConnectionLeases.TryGetValue(controllerName, out var leases) && !leases.IsEmpty)
         {
-            device.EnsureConnected();
+            device.EnsureConnected(retryFailedConnection);
             device.SetLowPowerMode(leases.Values.All(value => value != 0));
         }
         else
@@ -121,7 +121,7 @@ internal static class ControllerRegistry
             }
             Volatile.Write(ref _controllers, descriptors.ToArray());
             foreach (var descriptor in descriptors)
-                ReconcileConnection(descriptor.ControllerName);
+                ReconcileConnection(descriptor.ControllerName, retryFailedConnection: true);
             ControllerListObservable.NotifyChanged();
         }
         catch (Exception exception)
@@ -212,11 +212,11 @@ internal sealed class GearVRBleDevice : IDisposable
 
     private DateTime _lastReceivedUtc = DateTime.UtcNow;
 
-    internal void EnsureConnected()
+    internal void EnsureConnected(bool retryFailedConnection = false)
     {
         if (Interlocked.Exchange(ref _connectionIntent, 1) != 1)
             Interlocked.Increment(ref _intentRevision);
-        if (!IsReady)
+        if (!IsReady && (retryFailedConnection || Volatile.Read(ref _snapshot).ConnectionState != GearVRConnectionState.Error))
             QueueReconcile();
     }
 
@@ -261,13 +261,21 @@ internal sealed class GearVRBleDevice : IDisposable
             }
 
             if (!IsReady)
+            {
+                if (HasResources)
+                    await ReleaseResourcesAsync().ConfigureAwait(false);
                 await ConnectAsync().ConfigureAwait(false);
+            }
 
             if (IsReady)
                 await ApplyLowPowerModeAsync().ConfigureAwait(false);
 
             if (Volatile.Read(ref _connectionIntent) == 0)
                 await DisconnectAsync().ConfigureAwait(false);
+        }
+        catch (Exception exception)
+        {
+            SetState(GearVRConnectionState.Error, exception.Message);
         }
         finally
         {
@@ -287,6 +295,7 @@ internal sealed class GearVRBleDevice : IDisposable
             _device = await BluetoothLEDevice.FromIdAsync(_id).AsTask().ConfigureAwait(false);
             if (_device is null)
                 throw new InvalidOperationException("Windows could not open the paired Bluetooth device.");
+            _device.ConnectionStatusChanged += OnConnectionStatusChanged;
 
             var services = await GetServicesWithRetryAsync(_device).ConfigureAwait(false);
 
@@ -333,6 +342,16 @@ internal sealed class GearVRBleDevice : IDisposable
         Volatile.Write(ref _lowPowerModeApplied, requested);
     }
 
+    private void OnConnectionStatusChanged(BluetoothLEDevice sender, object args)
+    {
+        if (sender.ConnectionStatus != BluetoothConnectionStatus.Disconnected)
+            return;
+
+        SetState(GearVRConnectionState.Disconnected, "");
+        if (Volatile.Read(ref _connectionIntent) == 1 && Volatile.Read(ref _lowPowerModeRequested) == 0)
+            QueueReconcile();
+    }
+
     private async Task DisconnectAsync()
     {
         await ReleaseResourcesAsync().ConfigureAwait(false);
@@ -375,7 +394,11 @@ internal sealed class GearVRBleDevice : IDisposable
         _command = null;
         var device = _device;
         _device = null;
-        device?.Dispose();
+        if (device is not null)
+        {
+            device.ConnectionStatusChanged -= OnConnectionStatusChanged;
+            device.Dispose();
+        }
     }
 
     private async Task SubscribeBatteryAsync(IReadOnlyList<GattDeviceService> services)
