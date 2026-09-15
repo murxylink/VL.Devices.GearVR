@@ -8,7 +8,7 @@ Windows Bluetooth LE nodes for Samsung Gear VR / ET-YO324 controllers in vvvv ga
 2. In a command prompt opened in Gamma's package folder (for example, `C:\NugetOverride\7.4`), install the public package from NuGet.org:
 
    ```powershell
-   nuget install VL.Devices.GearVR -Version 1.2.2 -Source https://api.nuget.org/v3/index.json
+   nuget install VL.Devices.GearVR -Version 1.2.3 -Source https://api.nuget.org/v3/index.json
    ```
 
    Restart Gamma after the installation.
@@ -19,7 +19,7 @@ Windows Bluetooth LE nodes for Samsung Gear VR / ET-YO324 controllers in vvvv ga
 
 | Node | What it provides |
 | --- | --- |
-| `GearVR Controller` | Slot selection, rescan, controller handle, full immutable `Info`, and battery percentage. `Info.Raw Report` is the original 60-byte BLE frame. |
+| `GearVR Controller` | Slot selection, rescan, controller handle, full immutable `Info`, and battery percentage. Set `Allow Sleep` to enable the controller's low-power mode: it continues working until its firmware chooses to sleep after inactivity. Set it back to `false` to keep the controller awake. `Info.Raw Report` is the original 60-byte BLE frame. |
 | `Clicks` | Current held state for Trigger, Home, Back, Touchpad click, Volume Up and Volume Down. |
 | `Movement` | Raw sensor counts; scaled acceleration (m/s²), angular velocity (rad/s), magnetic field (µT); auto-calibrated gyro velocity, gravity-removed acceleration, and a 6-axis (gyro + gravity) orientation. |
 | `Touchpad` | Raw and normalised coordinates, delta, touch/click state, and the latest recognised Tap, Double Tap, Long Press, eight-way swipe or circle gesture. |

@@ -16,6 +16,7 @@ internal static class ControllerRegistry
 {
     private static readonly SemaphoreSlim ScanGate = new(1, 1);
     private static readonly ConcurrentDictionary<string, GearVRBleDevice> Devices = new(StringComparer.Ordinal);
+    private static readonly ConcurrentDictionary<string, ConcurrentDictionary<long, byte>> ConnectionLeases = new(StringComparer.Ordinal);
     private static ControllerDescriptor[] _controllers = Array.Empty<ControllerDescriptor>();
     private static readonly ControllerListObservable ControllerListObservable = new();
     private static int _scanRequested;
@@ -52,6 +53,53 @@ internal static class ControllerRegistry
 
     internal static string GetDefaultControllerName() => Volatile.Read(ref _controllers).FirstOrDefault()?.ControllerName ?? "";
 
+    internal static void UpdateConnectionLease(long leaseId, string previousControllerName, string controllerName, bool allowSleep)
+    {
+        if (!string.Equals(previousControllerName, controllerName, StringComparison.Ordinal) && !string.IsNullOrWhiteSpace(previousControllerName))
+        {
+            RemoveConnectionLease(previousControllerName, leaseId);
+            ReconcileConnection(previousControllerName);
+        }
+
+        if (string.IsNullOrWhiteSpace(controllerName))
+            return;
+
+        ConnectionLeases.GetOrAdd(controllerName, _ => new ConcurrentDictionary<long, byte>())[leaseId] = allowSleep ? (byte)1 : (byte)0;
+
+        ReconcileConnection(controllerName);
+    }
+
+    internal static void ReleaseConnectionLease(long leaseId, string controllerName)
+    {
+        if (string.IsNullOrWhiteSpace(controllerName))
+            return;
+
+        RemoveConnectionLease(controllerName, leaseId);
+        ReconcileConnection(controllerName);
+    }
+
+    private static void RemoveConnectionLease(string controllerName, long leaseId)
+    {
+        if (ConnectionLeases.TryGetValue(controllerName, out var leases))
+            leases.TryRemove(leaseId, out _);
+    }
+
+    private static void ReconcileConnection(string controllerName)
+    {
+        var descriptor = Volatile.Read(ref _controllers)
+            .FirstOrDefault(item => string.Equals(item.ControllerName, controllerName, StringComparison.Ordinal));
+        if (descriptor is null || !Devices.TryGetValue(descriptor.DeviceId, out var device))
+            return;
+
+        if (ConnectionLeases.TryGetValue(controllerName, out var leases) && !leases.IsEmpty)
+        {
+            device.EnsureConnected();
+            device.SetLowPowerMode(leases.Values.All(value => value != 0));
+        }
+        else
+            device.ReleaseConnection();
+    }
+
     private static async Task ScanAsync()
     {
         await ScanGate.WaitAsync().ConfigureAwait(false);
@@ -70,9 +118,10 @@ internal static class ControllerRegistry
             {
                 var device = Devices.GetOrAdd(info.Id, _ => new GearVRBleDevice(info.Id, info.Name));
                 descriptors.Add(new ControllerDescriptor(info.Name, info.Id));
-                device.EnsureConnected();
             }
             Volatile.Write(ref _controllers, descriptors.ToArray());
+            foreach (var descriptor in descriptors)
+                ReconcileConnection(descriptor.ControllerName);
             ControllerListObservable.NotifyChanged();
         }
         catch (Exception exception)
@@ -137,7 +186,12 @@ internal sealed class GearVRBleDevice : IDisposable
     private static readonly Guid BatteryCharacteristic = Guid.Parse("00002a19-0000-1000-8000-00805f9b34fb");
     private readonly string _id;
     private readonly string _name;
-    private int _starting;
+    private readonly SemaphoreSlim _connectionGate = new(1, 1);
+    private int _connectionIntent;
+    private int _intentRevision;
+    private int _reconciling;
+    private int _lowPowerModeRequested;
+    private int _lowPowerModeApplied = -1;
     private BluetoothLEDevice? _device;
     private GattCharacteristic? _command;
     private GattCharacteristic? _data;
@@ -160,8 +214,69 @@ internal sealed class GearVRBleDevice : IDisposable
 
     internal void EnsureConnected()
     {
-        if (Interlocked.Exchange(ref _starting, 1) == 0)
-            _ = Task.Run(ConnectAsync);
+        if (Interlocked.Exchange(ref _connectionIntent, 1) != 1)
+            Interlocked.Increment(ref _intentRevision);
+        if (!IsReady)
+            QueueReconcile();
+    }
+
+    internal void SetLowPowerMode(bool allowSleep)
+    {
+        var requested = allowSleep ? 1 : 0;
+        if (Interlocked.Exchange(ref _lowPowerModeRequested, requested) != requested)
+        {
+            Interlocked.Increment(ref _intentRevision);
+            QueueReconcile();
+        }
+    }
+
+    internal void ReleaseConnection()
+    {
+        if (Interlocked.Exchange(ref _connectionIntent, 0) != 0)
+            Interlocked.Increment(ref _intentRevision);
+        if (HasResources)
+            QueueReconcile();
+    }
+
+    private bool IsReady => _device is not null && _data is not null && Volatile.Read(ref _snapshot).ConnectionState == GearVRConnectionState.Connected;
+    private bool HasResources => _device is not null || _command is not null || _data is not null || _battery is not null;
+
+    private void QueueReconcile()
+    {
+        if (Interlocked.Exchange(ref _reconciling, 1) == 0)
+            _ = Task.Run(ReconcileConnectionAsync);
+    }
+
+    private async Task ReconcileConnectionAsync()
+    {
+        var processedRevision = 0;
+        try
+        {
+            await _connectionGate.WaitAsync().ConfigureAwait(false);
+            processedRevision = Volatile.Read(ref _intentRevision);
+            if (Volatile.Read(ref _connectionIntent) == 0)
+            {
+                await DisconnectAsync().ConfigureAwait(false);
+                return;
+            }
+
+            if (!IsReady)
+                await ConnectAsync().ConfigureAwait(false);
+
+            if (IsReady)
+                await ApplyLowPowerModeAsync().ConfigureAwait(false);
+
+            if (Volatile.Read(ref _connectionIntent) == 0)
+                await DisconnectAsync().ConfigureAwait(false);
+        }
+        finally
+        {
+            if (_connectionGate.CurrentCount == 0)
+                _connectionGate.Release();
+            Interlocked.Exchange(ref _reconciling, 0);
+            if (Volatile.Read(ref _intentRevision) != processedRevision)
+                QueueReconcile();
+        }
     }
 
     private async Task ConnectAsync()
@@ -203,9 +318,64 @@ internal sealed class GearVRBleDevice : IDisposable
         }
         catch (Exception exception)
         {
+            await ReleaseResourcesAsync().ConfigureAwait(false);
             SetState(GearVRConnectionState.Error, exception.Message);
-            Interlocked.Exchange(ref _starting, 0);
         }
+    }
+
+    private async Task ApplyLowPowerModeAsync()
+    {
+        var requested = Volatile.Read(ref _lowPowerModeRequested);
+        if (Volatile.Read(ref _lowPowerModeApplied) == requested)
+            return;
+
+        await SendCommandAsync(requested == 1 ? (byte)0x06 : (byte)0x07, 1).ConfigureAwait(false);
+        Volatile.Write(ref _lowPowerModeApplied, requested);
+    }
+
+    private async Task DisconnectAsync()
+    {
+        await ReleaseResourcesAsync().ConfigureAwait(false);
+        SetState(GearVRConnectionState.Disconnected, "");
+    }
+
+    private async Task ReleaseResourcesAsync()
+    {
+        Volatile.Write(ref _lowPowerModeApplied, -1);
+        var data = _data;
+        _data = null;
+        if (data is not null)
+        {
+            data.ValueChanged -= OnData;
+            try
+            {
+                await data.WriteClientCharacteristicConfigurationDescriptorAsync(GattClientCharacteristicConfigurationDescriptorValue.None).AsTask().ConfigureAwait(false);
+            }
+            catch
+            {
+                // The device may already be asleep; disposing the Windows handle is still enough to release it.
+            }
+        }
+
+        var battery = _battery;
+        _battery = null;
+        if (battery is not null)
+        {
+            battery.ValueChanged -= OnBattery;
+            try
+            {
+                await battery.WriteClientCharacteristicConfigurationDescriptorAsync(GattClientCharacteristicConfigurationDescriptorValue.None).AsTask().ConfigureAwait(false);
+            }
+            catch
+            {
+                // See the data-characteristic cleanup above.
+            }
+        }
+
+        _command = null;
+        var device = _device;
+        _device = null;
+        device?.Dispose();
     }
 
     private async Task SubscribeBatteryAsync(IReadOnlyList<GattDeviceService> services)
@@ -310,10 +480,6 @@ internal sealed class GearVRBleDevice : IDisposable
 
     public void Dispose()
     {
-        if (_data is not null)
-            _data.ValueChanged -= OnData;
-        if (_battery is not null)
-            _battery.ValueChanged -= OnBattery;
-        _device?.Dispose();
+        ReleaseConnection();
     }
 }

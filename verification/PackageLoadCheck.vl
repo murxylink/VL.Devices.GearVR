@@ -911,6 +911,6 @@
     </Node>
   </Patch>
   <NugetDependency Id="SGveul2t2YshJWhVNTWsYS" Location="VL.CoreLib" Version="2025.7.4" />
-  <NugetDependency Id="mwgfH9VMbslPuLezu9XrmC" Location="VL.Devices.GearVR" Version="1.2.2" />
+  <NugetDependency Id="mwgfH9VMbslPuLezu9XrmC" Location="VL.Devices.GearVR" Version="1.2.3" />
   <NugetDependency Id="VXaRPcjSZfCMjibAC8Hi6p" Location="VL.Stride" Version="2025.7.4" />
 </Document>

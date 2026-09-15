@@ -10,10 +10,13 @@ namespace VL.Devices.GearVR;
 [ProcessNode(Name = "GearVR Controller", Category = "Devices.GearVR")]
 public sealed class GearVRController : IDisposable
 {
+    private static long NextConnectionLeaseId;
     private bool _previousRescan;
     private bool _started;
     private readonly bool _isPlaybackController;
+    private readonly long _connectionLeaseId = Interlocked.Increment(ref NextConnectionLeaseId);
     private string _controllerName = "";
+    private string _leasedControllerName = "";
     private GearVRControllerInfo? _playbackSnapshot;
 
     /// <summary>Creates a Bluetooth controller handle for the GearVR Controller node.</summary>
@@ -34,7 +37,8 @@ public sealed class GearVRController : IDisposable
         out int battery,
         out string activeController,
         [Pin(Name = "Bluetooth Controller")] GearVRControllerSerialNumber controllerSelection,
-        bool rescan = false)
+        bool rescan = false,
+        [Pin(Name = "Allow Sleep")] bool allowSleep = false)
     {
         if (_isPlaybackController)
         {
@@ -55,6 +59,8 @@ public sealed class GearVRController : IDisposable
         }
 
         _previousRescan = rescan;
+        ControllerRegistry.UpdateConnectionLease(_connectionLeaseId, _leasedControllerName, _controllerName, allowSleep);
+        _leasedControllerName = _controllerName;
         info = ControllerRegistry.GetSnapshot(_controllerName);
         battery = info.BatteryPercent;
         activeController = _controllerName;
@@ -73,6 +79,7 @@ public sealed class GearVRController : IDisposable
 
     public void Dispose()
     {
-        // Connections are shared by the eight-slot registry and intentionally live while Gamma runs.
+        if (!_isPlaybackController)
+            ControllerRegistry.ReleaseConnectionLease(_connectionLeaseId, _leasedControllerName);
     }
 }
